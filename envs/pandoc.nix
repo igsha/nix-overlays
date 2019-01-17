@@ -18,7 +18,7 @@
 
 let
   pandocWithDeps = ghcWithPackages (p: with p; [
-    pandoc-crossref
+    #pandoc-crossref
     pandoc-citeproc
     pandoc-placetable
     pandoc-include-code
