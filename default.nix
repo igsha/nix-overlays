@@ -36,13 +36,9 @@ in rec {
   docx-combine = import (fetchMaster "cvlabmiet/docx-combine") { inherit pkgs; };
   docx-replace = import (fetchMaster "cvlabmiet/docx-replace") { inherit pkgs; };
 
-  panflute = pkgs.callPackage ./panflute {
-    pythonPackages = pkgs.python3Packages;
-  };
-  pantable = pkgs.callPackage ./pantable {
-    pythonPackages = pkgs.python3Packages;
-    panflute = panflute;
-  };
+  panflute = pkgs.callPackage ./panflute { };
+  pantable = pkgs.callPackage ./pantable { };
+  cxxopts = pkgs.callPackage ./cxxopts { };
 
   inherit (pkgs.callPackage ./perl-packages {}) PandocElements;
   docproc = pkgs.callPackage (fetchMaster "igsha/docproc") { };

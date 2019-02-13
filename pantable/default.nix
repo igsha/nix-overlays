@@ -1,11 +1,11 @@
-{ stdenv, pythonPackages, panflute, fetchFromGitHub }:
+{ stdenv, python3Packages, panflute, fetchFromGitHub }:
 
-pythonPackages.buildPythonPackage rec {
+python3Packages.buildPythonPackage rec {
   pname = "pantable";
   version = "0.11.1";
   name = "${pname}-${version}";
 
-  src = pythonPackages.fetchPypi {
+  src = python3Packages.fetchPypi {
     inherit pname version;
     sha256 = "ae1eb735a60fc3b6a2f763883d8891829760dc5a48eef8ddfebf6b6d748133b7";
   };
