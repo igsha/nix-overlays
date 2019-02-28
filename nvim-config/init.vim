@@ -83,7 +83,7 @@ function MakeTagsInGitRootDir()
         return
     endif
     let l:tagfile = substitute(l:rootdir, '\n\+$', '', '') . '/.git/tags'
-    echo system('ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --exclude="*.html" -o ' . l:tagfile . ' ' . l:rootdir)
+    echo system('ctags -R --c++-kinds=+p --fields=+iaS --extras=+q --exclude="*.html" -o ' . l:tagfile . ' ' . l:rootdir)
     if v:shell_error != 0
         echoerr 'Got a error' v:shell_error
     endif

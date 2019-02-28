@@ -13,13 +13,13 @@
   cmake,
   gnumake,
   PandocElements,
-  pandoc-pipe
+  pandoc-pipe,
+  pandoc,
+  pandoc-crossref
 }:
 
 let
   pandocWithDeps = ghcWithPackages (p: with p; [
-    pandoc-crossref
-    pandoc-citeproc
     pandoc-placetable
     pandoc-include-code
   ]);
@@ -40,6 +40,8 @@ in mkShell rec {
     imagemagick7
     PandocElements
     pandoc-pipe
+    pandoc
+    pandoc-crossref
   ];
 
   env = buildEnv {
