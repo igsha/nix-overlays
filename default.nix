@@ -2,6 +2,7 @@ pkgs:
 
 let
   fetchMaster = user-repo: builtins.fetchTarball "https://api.github.com/repos/${user-repo}/tarball/master";
+  youtube-dl-extractor = ./youtube-dl/user_extractors.py;
 
 in rec {
   qutebrowser = pkgs.qutebrowser.overrideAttrs (oldAttrs: rec {
@@ -39,6 +40,13 @@ in rec {
   panflute = pkgs.callPackage ./panflute { };
   pantable = pkgs.callPackage ./pantable { };
   cxxopts = pkgs.callPackage ./cxxopts { };
+
+  youtube-dl = pkgs.youtube-dl.overrideAttrs (old: rec {
+    postPatch = ''
+      cp ${youtube-dl-extractor} youtube_dl/extractor/user_extractors.py
+      echo "from .user_extractors import *" >> youtube_dl/extractor/extractors.py
+    '';
+  });
 
   inherit (pkgs.callPackage ./perl-packages {}) PandocElements;
   docproc = pkgs.callPackage (fetchMaster "igsha/docproc") { };

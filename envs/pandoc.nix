@@ -21,7 +21,6 @@
 let
   pandocWithDeps = ghcWithPackages (p: with p; [
     pandoc-placetable
-    pandoc-include-code
   ]);
 
 in mkShell rec {
