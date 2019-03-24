@@ -1,6 +1,5 @@
 { mkShell,
   buildEnv,
-  ghcWithPackages,
   docproc,
   docx-combine,
   docx-replace,
@@ -15,22 +14,17 @@
   PandocElements,
   pandoc-pipe,
   pandoc,
-  pandoc-crossref
+  pandoc-crossref,
+  pandoc-placetable
 }:
 
-let
-  pandocWithDeps = ghcWithPackages (p: with p; [
-    pandoc-placetable
-  ]);
-
-in mkShell rec {
+mkShell rec {
   name = "pandocenv";
   buildInputs = [
     docx-combine
     docx-replace
     (python3.withPackages (p: [ p.python-docx panflute ]))
     pantable
-    pandocWithDeps
     docproc
     cmake
     gnumake
@@ -39,6 +33,7 @@ in mkShell rec {
     imagemagick7
     PandocElements
     pandoc-pipe
+    pandoc-placetable
     pandoc
     pandoc-crossref
   ];

@@ -5,14 +5,6 @@ let
   youtube-dl-extractor = ./youtube-dl/user_extractors.py;
 
 in rec {
-  qutebrowser = pkgs.qutebrowser.overrideAttrs (oldAttrs: rec {
-    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ pkgs.libGL ];
-    postFixup = oldAttrs.postFixup + ''
-      wrapProgram $out/bin/qutebrowser --suffix LD_LIBRARY_PATH : "${pkgs.libGL}/lib"
-      sed -i 's/\.qutebrowser-wrapped/qutebrowser/' $out/bin/..qutebrowser-wrapped-wrapped
-    '';
-  });
-
   clawsMail = pkgs.clawsMail.override {
     enablePluginFancy = true;
     enablePluginVcalendar = true;
@@ -52,20 +44,12 @@ in rec {
   docproc = pkgs.callPackage (fetchMaster "igsha/docproc") { };
   pandoc-pipe = pkgs.callPackage (fetchMaster "igsha/pandoc-pipe") { };
 
-  pandoc-release = pkgs.callPackage ./pandoc/2.6.nix { };
-  pandoc-release-24 = pkgs.callPackage ./pandoc/2.4.nix { };
-  pandoc-crossref-release = pkgs.callPackage ./pandoc-crossref/0.3.4.0c.nix { };
-  pandoc-crossref = pandoc-crossref-release;
+  pandoc-release = pkgs.callPackage ./pandoc/2.7.1.nix { };
   pandoc = pandoc-release;
+  pandoc-crossref-release = pkgs.callPackage ./pandoc-crossref/0.3.4.0d.nix { };
+  pandoc-crossref = pandoc-crossref-release;
 
-  myGhc = pkgs.haskellPackages.override {
-    overrides = self: super: {
-      pandoc-include-code = super.pandoc-include-code.overrideAttrs (old: rec { doCheck = false; });
-      conduit = super.conduit.overrideAttrs (old: rec { doCheck = false; });
-    };
-  };
-
-  pandocenv = pkgs.callPackage ./envs/pandoc.nix { inherit (myGhc) ghcWithPackages; };
+  pandocenv = pkgs.callPackage ./envs/pandoc.nix { inherit (pkgs.haskellPackages) pandoc-placetable; };
   gccenv = pkgs.callPackage ./envs/gcc.nix pkgs;
   pythonenv = pkgs.callPackage ./envs/python.nix pkgs;
   latexenv = pkgs.callPackage ./envs/latex.nix pkgs;
