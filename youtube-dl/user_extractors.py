@@ -8,9 +8,9 @@ class AnimediaIE(InfoExtractor):
         video_id = self._match_id(url)
         webpage = self._download_webpage(url, video_id)
 
-        video_uuid = re.search(r'.+?/screens/(\w+).jpg', self._og_search_thumbnail(webpage)).group(1)
-        embed_id = self._html_search_regex(r'(cdn-\d+.animedia.tv/[^/]+/{})'.format(video_uuid), webpage, video_id)
-        video_url = 'https://{}.mp4/master.m3u8'.format(embed_id)
+        entry_id = self._html_search_regex(r'data-id=(?:"|\')(\d+)', webpage, name=video_id)
+        video_url_format = self._html_search_regex(r'<meta\s+property=(?:"|\')og:video(?:"|\')\s+href=(?:"|\')([^"\']+)', webpage, name=video_id)
+        video_url = video_url_format.format(entry_id=entry_id)
         self.report_extraction(video_url)
 
         return self.url_result(video_url, video_id=video_id, video_title=video_id.replace('/', '-'))
