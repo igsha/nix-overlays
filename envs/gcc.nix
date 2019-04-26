@@ -3,7 +3,7 @@ pkgs:
 with pkgs;
 let
   compiling = [ clang-tools pkgconfig cmake gnumake dpkg rpm ];
-  debugging = [ gdb valgrind strace ltrace binutils lcov ];
+  debugging = [ gdb valgrind strace ltrace lcov ];
   documenting = [ doxygen graphviz plantuml ];
   testing = [ catch gtest ];
   image = [ cimg pngpp libjpeg netpbm SDL SDL_image imagemagick7 ];
