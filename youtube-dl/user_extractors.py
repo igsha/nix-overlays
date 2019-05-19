@@ -21,3 +21,16 @@ class AnimediaIE(InfoExtractor):
 
         self.report_extraction(video_url)
         return {'id': video_id, 'title': video_title, 'url': video_url}
+
+class GetPlrIE(InfoExtractor):
+    _VALID_URL = r'(?:https?://)?(?:www\.)?(?:getplr.xyz|getvi.tv)/embed/(?P<id>\d+)'
+
+    def _real_extract(self, url):
+        video_id = self._match_id(url)
+        webpage = self._download_webpage(url, video_id)
+
+        video_urls = self._html_search_regex(r'file:\s*"([^"]+)"', webpage, video_id)
+        video_url = re.split(r',', video_urls)[0]
+
+        self.report_extraction(video_url)
+        return {'id': video_id, 'title': 'getplr ', 'url': re.sub(r'^\[\d+p?\]', '', video_url)}
