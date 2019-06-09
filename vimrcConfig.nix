@@ -27,6 +27,9 @@ let
       let g:buffergator_viewport_split_policy = 'T'
       nnoremap <Leader>b :BuffergatorToggle<CR>
     '';
+    color = ''
+      colorscheme molokai
+    '';
   };
   bdall = vimUtils.buildVimPlugin {
     name = "bdall";
@@ -68,6 +71,7 @@ in rec {
       vim-buffergator
       vim-grammarous
       smarthomekey
+      molokai
     ];
     opt = [ ];
   };

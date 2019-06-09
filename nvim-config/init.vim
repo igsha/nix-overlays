@@ -28,6 +28,8 @@ set smartindent
 set backspace=2
 set modeline
 
+set nofoldenable
+
 let g:netrw_list_hide = '^\.'
 let g:netrw_liststyle = 1
 
@@ -66,8 +68,6 @@ set fileencodings=utf8,cp1251,koi8-r,cp866
 
 " omni completion
 set completeopt=menu
-
-colorscheme desert
 
 set fileformats+=dos " http://stackoverflow.com/questions/14171254/why-would-vim-add-a-new-line-at-the-end-of-a-file
 
