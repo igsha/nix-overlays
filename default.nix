@@ -1,7 +1,8 @@
 pkgs:
 
 let
-  fetchMaster = user-repo: builtins.fetchTarball "https://api.github.com/repos/${user-repo}/tarball/master";
+  fetchBranch = user-repo: branch: builtins.fetchTarball "https://api.github.com/repos/${user-repo}/tarball/${branch}";
+  fetchMaster = user-repo: fetchBranch user-repo "master";
   youtube-dl-extractor = ./youtube-dl/user_extractors.py;
 
 in rec {
@@ -45,9 +46,11 @@ in rec {
   pandoc-pipe = pkgs.callPackage (fetchMaster "igsha/pandoc-pipe") { };
 
   pandoc-release = pkgs.callPackage ./pandoc/2.7.1.nix { };
-  pandoc = pandoc-release;
   pandoc-crossref-release = pkgs.callPackage ./pandoc-crossref/0.3.4.0d.nix { };
+  pandoc = pandoc-release;
   pandoc-crossref = pandoc-crossref-release;
+
+  iplay = pkgs.callPackage (fetchMaster "igsha/iplay") { };
 
   pandocenv = pkgs.callPackage ./envs/pandoc.nix { inherit (pkgs.haskellPackages) pandoc-placetable; };
   gccenv = pkgs.callPackage ./envs/gcc.nix pkgs;
