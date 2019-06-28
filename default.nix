@@ -45,7 +45,7 @@ in rec {
   docproc = pkgs.callPackage (fetchMaster "igsha/docproc") { };
   pandoc-pipe = pkgs.callPackage (fetchMaster "igsha/pandoc-pipe") { };
 
-  pandoc-release = pkgs.callPackage ./pandoc/2.7.1.nix { };
+  pandoc-release = pkgs.callPackage ./pandoc/2.7.3.nix { };
   pandoc-crossref-release = pkgs.callPackage ./pandoc-crossref/0.3.4.0d.nix { };
   pandoc = pandoc-release;
   pandoc-crossref = pandoc-crossref-release;
