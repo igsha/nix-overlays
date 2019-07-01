@@ -27,6 +27,8 @@ in rec {
     llvmPackages = pkgs.llvmPackages_6;
   };
 
+  qt512 = pkgs.qt512 // { qtbase = pkgs.qt512.qtbase.override { stdenv = pkgs.overrideCC pkgs.stdenv pkgs.gcc6; }; };
+
   docx-combine = import (fetchMaster "cvlabmiet/docx-combine") { inherit pkgs; };
   docx-replace = import (fetchMaster "cvlabmiet/docx-replace") { inherit pkgs; };
 
