@@ -24,10 +24,10 @@ in rec {
   };
 
   clang-tools = pkgs.clang-tools.override {
-    llvmPackages = pkgs.llvmPackages_6;
+    llvmPackages = pkgs.llvmPackages_7;
   };
 
-  qt512 = pkgs.qt512 // { qtbase = pkgs.qt512.qtbase.override { stdenv = pkgs.overrideCC pkgs.stdenv pkgs.gcc6; }; };
+  wine = pkgs.wine.override { gstreamerSupport = false; }; # https://github.com/NixOS/nixpkgs/issues/63829
 
   docx-combine = import (fetchMaster "cvlabmiet/docx-combine") { inherit pkgs; };
   docx-replace = import (fetchMaster "cvlabmiet/docx-replace") { inherit pkgs; };

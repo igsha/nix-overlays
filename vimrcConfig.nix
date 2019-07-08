@@ -28,7 +28,7 @@ let
       nnoremap <Leader>b :BuffergatorToggle<CR>
     '';
     color = ''
-      colorscheme molokai
+      colorscheme jellybeans
     '';
   };
   bdall = vimUtils.buildVimPlugin {
@@ -47,6 +47,10 @@ let
   smarthomekey = vimUtils.buildVimPlugin {
     name = "smarthomekey";
     src = builtins.fetchTarball https://api.github.com/repos/chenkaie/smarthomekey.vim/tarball/master;
+  };
+  jellybeans = vimUtils.buildVimPlugin {
+    name = "jellybeans";
+    src = builtins.fetchTarball https://api.github.com/repos/nanotech/jellybeans.vim/tarball/master;
   };
 
 in rec {
@@ -71,7 +75,7 @@ in rec {
       vim-buffergator
       vim-grammarous
       smarthomekey
-      molokai
+      jellybeans
     ];
     opt = [ ];
   };
