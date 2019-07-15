@@ -3,10 +3,11 @@
 with perlPackages;
 rec {
   Pandoc = buildPerlModule rec {
-    name = "Pandoc-0.8.6";
+    pname = "Pandoc";
+    version = "0.8.6";
 
     src = fetchurl {
-      url = "mirror://cpan/authors/id/V/VO/VOJ/${name}.tar.gz";
+      url = "mirror://cpan/authors/id/V/VO/VOJ/${pname}-${version}.tar.gz";
       sha256 = "a4dd6a5c283ae2b87b920becd838713ebf75bdc6bbdfd16a8107a29c0948f316";
     };
 
@@ -21,9 +22,10 @@ rec {
   };
 
   PandocElements = buildPerlModule rec {
-    name = "Pandoc-Elements-0.37";
+    pname = "Pandoc-Elements";
+    version = "0.37";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/V/VO/VOJ/${name}.tar.gz";
+      url = "mirror://cpan/authors/id/V/VO/VOJ/${pname}-${version}.tar.gz";
       sha256 = "8483ea4878519d6b33b79be648d6555ad9fb2415202b316c73bc43679d809df4";
     };
 

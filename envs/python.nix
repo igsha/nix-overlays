@@ -8,7 +8,6 @@ let
       (matplotlib.override { enableQt = true; })
       scipy
       opencv3
-      jupyter
       pyside
       virtualenv
       pillow
