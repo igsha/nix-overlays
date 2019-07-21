@@ -29,6 +29,8 @@ let
     '';
     color = ''
       colorscheme jellybeans
+      let g:jellybeans_overrides = {'background':{'ctermbg':'none','256ctermbg':'none','guibg':'none'}}
+      set background=
     '';
   };
   bdall = vimUtils.buildVimPlugin {
