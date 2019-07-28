@@ -36,12 +36,12 @@ in rec {
   pantable = pkgs.callPackage ./pantable { };
   cxxopts = pkgs.callPackage ./cxxopts { };
 
-  youtube-dl = pkgs.youtube-dl.overrideAttrs (old: rec {
+  youtube-dl = (pkgs.youtube-dl.overrideAttrs (old: rec {
     postPatch = ''
       cp ${youtube-dl-extractor} youtube_dl/extractor/user_extractors.py
       echo "from .user_extractors import *" >> youtube_dl/extractor/extractors.py
     '';
-  });
+  })).override { phantomjsSupport = true; };
 
   inherit (pkgs.callPackage ./perl-packages {}) PandocElements;
   docproc = pkgs.callPackage (fetchMaster "igsha/docproc") { };
