@@ -15,10 +15,6 @@ in rec {
     webkitgtk24x-gtk2 = pkgs.webkitgtk;
   };
 
-  matplotlib = pkgs.python3Packages.matplotlib.overrideAttrs (oldAttrs: rec {
-    enableQt = true;
-  });
-
   neovim = pkgs.neovim.override {
     configure = import ./vimrcConfig.nix { inherit (pkgs) vimUtils vimPlugins fetchFromGitHub; };
   };
@@ -26,8 +22,6 @@ in rec {
   clang-tools = pkgs.clang-tools.override {
     llvmPackages = pkgs.llvmPackages_7;
   };
-
-  wine = pkgs.wine.override { gstreamerSupport = false; }; # https://github.com/NixOS/nixpkgs/issues/63829
 
   docx-combine = import (fetchMaster "cvlabmiet/docx-combine") { inherit pkgs; };
   docx-replace = import (fetchMaster "cvlabmiet/docx-replace") { inherit pkgs; };
