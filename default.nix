@@ -15,9 +15,14 @@ in rec {
     webkitgtk24x-gtk2 = pkgs.webkitgtk;
   };
 
-  neovim = pkgs.neovim.override {
+  neovim = (pkgs.neovim.override {
     configure = import ./vimrcConfig.nix { inherit (pkgs) vimUtils vimPlugins fetchFromGitHub; };
-  };
+  }).overrideAttrs (old: rec {
+    buildCommand = old.buildCommand + ''
+      substitute $out/share/applications/nvim.desktop $out/share/applications/nvim.desktop \
+        --replace 'Exec=nvim' "Exec=xst -c editor -e nvim "
+    '';
+  });
 
   clang-tools = pkgs.clang-tools.override {
     llvmPackages = pkgs.llvmPackages_7;
