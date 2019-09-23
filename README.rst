@@ -6,21 +6,18 @@ Provides new packages and package customizations for nixpkgs.
 Configuration
 =============
 
-Place this in ``nix.conf`` (create link on directory or use url)::
-
-  packageOverrides = let my-packages = /etc/nix-overrides; in
-    if builtins.pathExists my-packages
-    then import my-packages
-    else import (builtins.fetchTarball https://api.github.com/repos/igsha/nix-overrides/tarball/master);
-
 Use new package and overrides in ``configuration.nix``::
 
-  nixpkgs.config = import ./nixpkgs-config.nix;
+  let
+    overlay = https://api.github.com/repos/igsha/nix-overlays/tarball/master;
+  ...
+
+  nixpkgs.overlays = [ (import overlay) ];
+  nix.nixPath = options.nix.nixPath.default ++ [ "nixpkgs-overlays=${overlay}/overlays.nix" ];
 
   system.extraDependencies = with pkgs; [
-    gccenv.env
-    pandocenv.env
-    pythonenv.env
+    docproc
+    iplay
     ...
   ];
 
@@ -29,3 +26,6 @@ Use new package and overrides in ``configuration.nix``::
     qutebrowser
     docproc
     ...
+
+Setting of ``nixpkgs.overlays`` allows to use overlays through system and
+``nix.nixPath`` allows to user overlays through nix tools.
