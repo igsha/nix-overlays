@@ -6,14 +6,22 @@ Provides new packages and package customizations for nixpkgs.
 Configuration
 =============
 
-Use new package and overrides in ``configuration.nix``::
+Set up overlay in ``~/.config/nixpkgs/overlays.nix``::
+
+   let
+     url = https://api.github.com/repos/igsha/nix-overlays/tarball/master;
+     overlay = builtins.fetchTarball url;
+   in [
+      (import overlay)
+   ]
+
+To use overlay through the whole system, put these lines into ``configuration.nix``::
 
   let
-    overlay = https://api.github.com/repos/igsha/nix-overlays/tarball/master;
+    overlay = builtins.fetchTarball https://api.github.com/repos/igsha/nix-overlays/tarball/master;
   ...
 
   nixpkgs.overlays = [ (import overlay) ];
-  nix.nixPath = options.nix.nixPath.default ++ [ "nixpkgs-overlays=${overlay}/overlays.nix" ];
 
   system.extraDependencies = with pkgs; [
     docproc
@@ -27,5 +35,4 @@ Use new package and overrides in ``configuration.nix``::
     docproc
     ...
 
-Setting of ``nixpkgs.overlays`` allows to use overlays through system and
-``nix.nixPath`` allows to user overlays through nix tools.
+You should use both approach: one is for nix tools, another is for system only needs.
