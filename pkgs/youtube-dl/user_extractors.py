@@ -1,5 +1,7 @@
 from .common import InfoExtractor
-import re, json
+from urllib import parse
+import re, json, sys
+
 
 class AnimediaIE(InfoExtractor):
     _VALID_URL = r'(?:https?://)?(?:www\.)?online.animedia.tv/anime/(?P<id>[-\w/]+)'
@@ -22,6 +24,7 @@ class AnimediaIE(InfoExtractor):
         self.report_extraction(video_url)
         return {'id': video_id, 'title': video_title, 'url': video_url}
 
+
 class GetPlrIE(InfoExtractor):
     _VALID_URL = r'(?:https?://)?(?:www\.)?(?:getplr.xyz|getvi.tv|onvi.cc)/embed/(?P<id>\d+)'
 
@@ -34,3 +37,21 @@ class GetPlrIE(InfoExtractor):
 
         self.report_extraction(video_url)
         return {'id': video_id, 'title': 'getplr ', 'url': re.sub(r'^\[\d+p?\]', '', video_url)}
+
+
+class KodikIE(InfoExtractor):
+    _VALID_URL = r'(?:https?://)?(?:www\.)?kodik.info/go/seria/(?P<id>[-\w/]+)'
+
+    def _real_extract(self, url):
+        video_id, video_hash = self._match_id(url).split('/')[0:2]
+        params = dict(parse.parse_qsl(parse.urlsplit(url).query))
+        params.update({'type': 'seria', 'id': video_id, 'hash': video_hash})
+        formdata = parse.urlencode(params).encode()
+        webpage = self._download_webpage("https://kodik.info/video-links", video_id, data=formdata)
+        jsn = json.loads(webpage)
+        if 'link' in jsn:
+            return {'id': video_id, 'title': video_hash, 'url': jsn['link'], 'protocol': 'm3u8'}
+        else:
+            video_urls = jsn['links']
+            formats = [{'url': re.sub(r'^//', 'https://', v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
+            return {'id': video_id, 'title': video_hash, 'formats': formats}
