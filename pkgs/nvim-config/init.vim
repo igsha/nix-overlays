@@ -58,7 +58,6 @@ map <C-Left> <C-W><Left>
 map <C-Right> <C-W><Right>
 map <C-Up> <C-W><Up>
 map <C-Down> <C-W><Down>
-tnoremap <Esc> <C-\><C-n>
 imap <C-Space> <C-x><C-o>
 " }}}
 
