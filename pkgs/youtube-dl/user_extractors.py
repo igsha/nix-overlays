@@ -16,7 +16,7 @@ class AnimediaIE(InfoExtractor):
         lst = json.loads(self._download_webpage(playlist, playlist))
         for x in lst:
             if x['id'] == series:
-                video_url = 'https:{}'.format(x['file'])
+                video_url = 'http:' + x['file'] if x['file'].startswith('//') else x['file']
                 video_title = '{} - {}'.format(video_id, x['title'])
                 video_id = x['id']
                 break
