@@ -33,8 +33,8 @@ in {
   docproc = super.callPackage (fetchMaster "igsha/docproc") { };
   pandoc-pipe = super.callPackage (fetchMaster "igsha/pandoc-pipe") { };
 
-  pandoc-release = super.callPackage ./pkgs/pandoc/2.7.3.nix { };
-  pandoc-crossref-release = super.callPackage ./pkgs/pandoc-crossref/0.3.4.0d.nix { };
+  pandoc-release = super.callPackage ./pkgs/pandoc/2.8.1.nix { };
+  pandoc-crossref-release = super.callPackage ./pkgs/pandoc-crossref/0.3.5.0b.nix { };
   pandoc = self.pandoc-release;
   pandoc-crossref = self.pandoc-crossref-release;
 

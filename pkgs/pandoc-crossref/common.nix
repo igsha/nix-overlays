@@ -1,26 +1,23 @@
-{ version, sha256, pandocVersion, stdenv, fetchurl }:
+{ version, hash, pandocVersion, stdenv, fetchurl }:
 
-let
-  selfVersion = version;
-  selfSha256 = sha256;
-
-in stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "pandoc-crossref";
-  version = selfVersion;
+  inherit version;
   sourceRoot = "./";
 
   src = fetchurl {
     url = "https://github.com/lierdakil/pandoc-crossref/releases/download/v${version}/linux-pandoc_${pandocVersion}.tar.gz";
-    sha256 = selfSha256;
+    inherit hash;
   };
-
-  phases = [ "unpackPhase" "installPhase" ];
 
   installPhase = ''
     mkdir -p $out/{bin,share/man/man1}
     cp pandoc-crossref $out/bin/
     cp pandoc-crossref.1 $out/share/man/man1/
   '';
+  dontConfigure = true;
+  dontBuild = true;
+  dontStrip = true;
 
   meta = with stdenv.lib; {
     homepage = https://lierdakil.github.io/pandoc-crossref;

@@ -1,22 +1,21 @@
-{ version, sha256, stdenv, fetchurl }:
+{ version, hash, stdenv, fetchurl }:
 
-let
-  pandocVersion = version;
-  pandocSha256 = sha256;
-
-in stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "pandoc";
-  version = pandocVersion;
+  inherit version;
 
   src = fetchurl {
-    url = "https://github.com/jgm/pandoc/releases/download/${version}/${pname}-${version}-linux.tar.gz";
-    sha256 = pandocSha256;
+    url = "https://github.com/jgm/pandoc/releases/download/${version}/${pname}-${version}-linux-amd64.tar.gz";
+    inherit hash;
   };
 
   installPhase = ''
     mkdir -p $out
     cp -r * $out/
   '';
+  dontConfigure = true;
+  dontBuild = true;
+  dontStrip = true;
 
   meta = with stdenv.lib; {
     homepage = https://github.com/jgm/pandoc;
