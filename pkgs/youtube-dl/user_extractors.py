@@ -55,3 +55,19 @@ class KodikIE(InfoExtractor):
             video_urls = jsn['links']
             formats = [{'url': re.sub(r'^//', 'https://', v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
             return {'id': video_id, 'title': video_hash, 'formats': formats}
+
+
+class RoomfishIE(InfoExtractor):
+    _VALID_URL = r'(?:https?://)?(?:www\.)?play.roomfish.ru/(?P<id>\d+)'
+
+    def _real_extract(self, url):
+        video_id = self._match_id(url)
+        webpage = self._download_webpage(url, video_id)
+
+        groups = re.search(r'"file":"([^"]+)"', webpage)[1].split(',')
+        formats = []
+        for g in groups:
+            xs = re.search(r'\[\w+\s*\((\d+)\w\)\]([^\s]+)', g)
+            formats.append({'url': xs[2], 'quality': int(xs[1])})
+
+        return {'id': video_id, 'title': video_id, 'formats': formats}
