@@ -40,7 +40,7 @@ class GetPlrIE(InfoExtractor):
 
 
 class KodikIE(InfoExtractor):
-    _VALID_URL = r'(?:https?://)?(?:www\.)?kodik.info/go/seria/(?P<id>[-\w/]+)'
+    _VALID_URL = r'(?:https?://)?(?:www\.)?(kodik.info|aniqit.com)/go/seria/(?P<id>[-\w/]+)'
 
     def _real_extract(self, url):
         video_id, video_hash = self._match_id(url).split('/')[0:2]
@@ -62,7 +62,7 @@ class RoomfishIE(InfoExtractor):
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
-        webpage = self._download_webpage(url, video_id)
+        webpage = self._download_webpage(url, video_id, headers={'User-Agent': 'curl/7.67.0'})
 
         groups = re.search(r'"file":"([^"]+)"', webpage)[1].split(',')
         formats = []
