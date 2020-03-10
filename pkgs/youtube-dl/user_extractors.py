@@ -26,7 +26,7 @@ class AnimediaIE(InfoExtractor):
 
 
 class GetPlrIE(InfoExtractor):
-    _VALID_URL = r'(?:https?://)?(?:www\.)?(?:getplr.xyz|getvi.tv|onvi.cc)/embed/(?P<id>\d+)'
+    _VALID_URL = r'(?:https?://)?(?:www\.)?(?:getplr.xyz|getvi.tv|onvi.cc|secvideo1.online)/embed/(?P<id>\d+)'
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
