@@ -39,4 +39,9 @@ in {
   pandoc-crossref = self.pandoc-crossref-release;
 
   iplay = super.callPackage (fetchMaster "igsha/iplay") { };
+  clang-tools = super.clang-tools.overrideAttrs (old: {
+    postInstall = ''
+      ln -s $out/bin/clangd $out/bin/clang-doc
+    '';
+  });
 }
