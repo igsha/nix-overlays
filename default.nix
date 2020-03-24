@@ -44,4 +44,5 @@ in {
       ln -s $out/bin/clangd $out/bin/clang-doc
     '';
   });
+  trueconf = super.callPackage ./pkgs/trueconf { };
 }
