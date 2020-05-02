@@ -1,4 +1,4 @@
-{ vimUtils, vimPlugins, fetchFromGitHub }:
+{ vimUtils, vimPlugins, fetchFromGitHub, python3Packages }:
 
 let
   customConfigs = {
@@ -32,6 +32,9 @@ let
       let g:jellybeans_overrides = {'background':{'ctermbg':'none','256ctermbg':'none','guibg':'none'}}
       set background=
     '';
+    jupytext = ''
+      let g:jupytext_command = '${python3Packages.jupytext}/bin/jupytext'
+    '';
   };
   bdall = vimUtils.buildVimPlugin {
     name = "bdall";
@@ -53,6 +56,10 @@ let
   jellybeans = vimUtils.buildVimPlugin {
     name = "jellybeans";
     src = builtins.fetchTarball https://api.github.com/repos/nanotech/jellybeans.vim/tarball/master;
+  };
+  jupytext-vim = vimUtils.buildVimPlugin {
+    name = "jupytext-vim";
+    src = builtins.fetchTarball https://api.github.com/repos/goerz/jupytext.vim/tarball/master;
   };
 
 in rec {
@@ -78,6 +85,7 @@ in rec {
       vim-grammarous
       smarthomekey
       jellybeans
+      jupytext-vim
     ];
     opt = [ ];
   };

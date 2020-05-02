@@ -7,11 +7,11 @@ let
 
 in {
   neovim = (super.neovim.override {
-    configure = import ./pkgs/vimrcConfig.nix { inherit (super) vimUtils vimPlugins fetchFromGitHub; };
+    configure = import ./pkgs/vimrcConfig.nix { inherit (super) vimUtils vimPlugins fetchFromGitHub python3Packages; };
   }).overrideAttrs (old: rec {
     buildCommand = old.buildCommand + ''
       substitute $out/share/applications/nvim.desktop $out/share/applications/nvim.desktop \
-        --replace 'Exec=nvim' "Exec=xst -c editor -e nvim "
+        --replace 'Exec=nvim' "Exec=termite --class editor -e nvim"
     '';
   });
 
@@ -45,4 +45,13 @@ in {
     '';
   });
   trueconf = super.callPackage ./pkgs/trueconf { };
+  agola = super.callPackage ./pkgs/agola { };
+  bcp = (super.boost.override { extraB2Args = [ "tools/bcp" ]; }).overrideAttrs (old: {
+    installPhase = ''
+      mkdir -p $out
+      cp -r dist/bin $out/
+    '';
+    outputs = [ "out" ];
+    postFixup = null;
+  });
 }

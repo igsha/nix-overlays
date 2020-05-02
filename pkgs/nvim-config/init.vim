@@ -98,7 +98,7 @@ function AttachGitTags()
     let &l:tags = l:tagfile
 endfunction
 
-autocmd BufEnter *.c,*.h,*.tex,*.cpp,*.s,*.hpp :call AttachGitTags()
+autocmd BufEnter *.c,*.h,*.tex,*.cpp,*.s,*.hpp,*.cxx,*.cc,*.hh,*.hxx :call AttachGitTags()
 autocmd FileType asm setlocal formatoptions+=rol
 augroup filetypedetect
     au BufRead,BufNewFile *.inc set filetype=asm
