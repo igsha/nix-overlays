@@ -1,0 +1,3 @@
+[
+  ./modules/agola.nix
+]
