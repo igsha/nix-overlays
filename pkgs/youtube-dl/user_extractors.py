@@ -73,6 +73,7 @@ class RoomfishIE(InfoExtractor):
 
         return {'id': video_id, 'title': video_id, 'formats': formats}
 
+
 class KodikListIE(InfoExtractor):
     _VALID_URL = r'(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com)/serial/(?P<id>[-\w/]+)'
 
@@ -86,6 +87,7 @@ class KodikListIE(InfoExtractor):
 
         return {'id': video_id, 'title': video_id, 'url': video_url, '_type': 'url', 'ie_key': 'Kodik', 'episode': episode}
 
+
 class ZombieIE(InfoExtractor):
     _VALID_URL = r'(?:https?://)?(?:www\.)?api\d+\.delivembed\.cc/embed/movie/(?P<id>\d+)'
 
@@ -98,3 +100,18 @@ class ZombieIE(InfoExtractor):
         episode = re.search("[^&]*&(.*)", url)[1]
 
         return {'id': video_id, 'title': video_id + episode, 'formats': formats}
+
+
+class SibnetIE(InfoExtractor):
+    _VALID_URL = r'(?:https?://)?(?:www\.)?video\.sibnet\.ru/(?P<id>.+)'
+
+    def _real_extract(self, url):
+        video_id = self._match_id(url)
+        webpage = self._download_webpage(url, video_id)
+        src = self._html_search_regex(r'src:\s*"([^"]+)', webpage, video_id)
+        video_url = "https://video.sibnet.ru" + src
+        self.report_extraction(video_url)
+        formats = [{'url': video_url, 'http_headers': {'Referer': url}}]
+        title = self._og_search_title(webpage)
+
+        return {'id': video_id, 'title': title, 'formats': formats}
