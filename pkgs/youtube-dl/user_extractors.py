@@ -85,7 +85,7 @@ class KodikListIE(InfoExtractor):
         self.report_extraction(video_url)
         episode = re.search("[^&]*&(.*)", url)[1]
 
-        return {'id': video_id, 'title': video_id, 'url': video_url, '_type': 'url', 'ie_key': 'Kodik', 'episode': episode}
+        return {'id': video_id, 'title': f'{video_id} [{episode}]', 'url': video_url, '_type': 'url', 'ie_key': 'Kodik'}
 
 
 class ZombieIE(InfoExtractor):

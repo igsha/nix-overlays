@@ -44,6 +44,7 @@ in {
     ];
 
     #services.etcd.enable = true;
+    virtualisation.docker.enable = true;
 
     systemd.services.agola = let
       etcdAddress = "http://localhost:${toString cfg.etcdPort}";
@@ -131,7 +132,7 @@ in {
     users.extraGroups.agola = {};
     users.extraUsers.agola = {
       description = "Agola daemon user";
-      extraGroups = [ "agola" ];
+      extraGroups = [ "agola" "docker" ];
       home = cfg.dataDir;
     };
   };
