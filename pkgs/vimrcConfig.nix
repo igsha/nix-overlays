@@ -86,6 +86,7 @@ in rec {
       smarthomekey
       jellybeans
       jupytext-vim
+      csv
     ];
     opt = [ ];
   };
