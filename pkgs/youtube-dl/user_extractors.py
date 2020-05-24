@@ -55,7 +55,7 @@ class KodikIE(InfoExtractor):
             return {'id': video_id, 'title': video_hash, 'url': jsn['link'], 'protocol': 'm3u8'}
         else:
             video_urls = jsn['links']
-            formats = [{'url': re.sub(r'^//', 'https://', v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
+            formats = [{'url': re.sub(r'^//', 'http://', v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
             return {'id': video_id, 'title': video_hash, 'formats': formats}
 
 
