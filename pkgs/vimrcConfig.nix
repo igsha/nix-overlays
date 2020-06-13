@@ -87,6 +87,7 @@ in rec {
       jellybeans
       jupytext-vim
       csv
+      editorconfig-vim
     ];
     opt = [ ];
   };

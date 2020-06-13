@@ -52,4 +52,5 @@ in {
     outputs = [ "out" ];
     postFixup = null;
   });
+  cmake-format = super.callPackage ./pkgs/cmake-format { };
 }
