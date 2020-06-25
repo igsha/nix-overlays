@@ -1,5 +1,5 @@
 { stdenv, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
-libpulseaudio, libv4l, boost167, libudev, gnupg, cppdb, speex, speexdsp, icu63, zeromq,
+libpulseaudio, libv4l, boost16x, libudev, gnupg, cppdb, speex, speexdsp, icu66, zeromq,
 protobuf3_6, xorg, qt5, libGL, openssl, dbus, makeWrapper
 }:
 
@@ -12,17 +12,18 @@ let
     };
   });
   protobuf = protobuf3_6;
-  icu = icu63;
+  icu = icu66;
 
 in stdenv.mkDerivation rec {
   pname = "trueconf";
-  version = "7.5.0.246";
+  version = "7.5.2.38";
 
   src = fetchurl {
-    url = "https://trueconf.com/download/trueconf_client_ubuntu1910_amd64.deb";
-    hash = sha256:1vckzl8lr1ixx3j6n2c4mmw5m633xagy6arj9ds18k7113ha761v;
+    url = https://trueconf.ru/download/trueconf_client_ubuntu2004_amd64.deb?v=202004241515;
+    hash = sha256:0q9qslmpy4pgy832rl4lwb8v8gcy6yx47a6k0idixwyv2n01g78a;
   };
 
+  buildInputs = [ boost16x ];
   nativeBuildInputs = [ dpkg patchelf qt5.wrapQtAppsHook makeWrapper ];
   propagatedNativeBuildInputs = [
     stdenv.cc.cc
@@ -31,7 +32,6 @@ in stdenv.mkDerivation rec {
     curl
     alsaLib
     libpulseaudio
-    boost167
     libv4l
     libudev
     freetype
@@ -69,7 +69,7 @@ in stdenv.mkDerivation rec {
 
   postFixup = ''
     patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) $out/opt/trueconf/TrueConf
-    patchelf --set-rpath ${libsPath}:$out/opt/trueconf/plugins/gui $out/opt/trueconf/TrueConf
+    patchelf --set-rpath ${libsPath}:$out/opt/trueconf/plugins/gui:$out/opt/trueconf/lib $out/opt/trueconf/TrueConf
     patchelf --set-rpath ${libsPath} $out/opt/trueconf/plugins/gui/*.so
     wrapQtApp $out/opt/trueconf/TrueConf
     wrapProgram $out/opt/trueconf/TrueConf --suffix LD_LIBRARY_PATH : ${libsPath}
