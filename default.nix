@@ -6,15 +6,6 @@ let
   youtube-dl-extractor = ./pkgs/youtube-dl/user_extractors.py;
 
 in {
-  neovim = (super.neovim.override {
-    configure = import ./pkgs/vimrcConfig.nix { inherit (super) vimUtils vimPlugins fetchFromGitHub python3Packages; };
-  }).overrideAttrs (old: rec {
-    buildCommand = old.buildCommand + ''
-      substitute $out/share/applications/nvim.desktop $out/share/applications/nvim.desktop \
-        --replace 'Exec=nvim' "Exec=termite --class editor -e nvim"
-    '';
-  });
-
   docx-combine = super.callPackage (fetchMaster "cvlabmiet/docx-combine") { };
   docx-replace = super.callPackage (fetchMaster "cvlabmiet/docx-replace") { };
 

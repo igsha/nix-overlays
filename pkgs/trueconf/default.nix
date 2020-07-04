@@ -16,11 +16,11 @@ let
 
 in stdenv.mkDerivation rec {
   pname = "trueconf";
-  version = "7.5.2.38";
+  version = "7.5.2.127";
 
   src = fetchurl {
-    url = https://trueconf.ru/download/trueconf_client_ubuntu2004_amd64.deb?v=202004241515;
-    hash = sha256:0q9qslmpy4pgy832rl4lwb8v8gcy6yx47a6k0idixwyv2n01g78a;
+    url = https://trueconf.ru/download/trueconf_client_ubuntu2004_amd64.deb?v=202006231500;
+    hash = sha256:1mpmrgzr7cgkx8az7mx6h354f7nci4p8l9yivfb6kbp80ghwgc43;
   };
 
   buildInputs = [ boost16x ];
