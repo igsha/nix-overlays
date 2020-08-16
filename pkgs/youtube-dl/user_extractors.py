@@ -40,7 +40,7 @@ class GetPlrIE(InfoExtractor):
 
 
 class KodikIE(InfoExtractor):
-    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com))/go/(?P<type>(seria|video))/(?P<id>[-\w/]+)'
+    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/go/(?P<type>(seria|video|uv))/(?P<id>[-\w/]+)'
 
     def _real_extract(self, url):
         video_id, video_hash = self._match_id(url).split('/')[0:2]
@@ -60,7 +60,7 @@ class KodikIE(InfoExtractor):
 
 
 class KodikListIE(InfoExtractor):
-    _VALID_URL = r'(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com)/(serial|video)/(?P<id>[-\w/]+)'
+    _VALID_URL = r'(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com)/(serial|video|uv)/(?P<id>[-\w/]+)'
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
