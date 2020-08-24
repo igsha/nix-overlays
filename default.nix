@@ -44,4 +44,9 @@ in {
     postFixup = null;
   });
   cmake-format = super.callPackage ./pkgs/cmake-format { };
+  i3blocks-gaps = super.i3blocks-gaps.overrideAttrs (old: {
+    postPatch = ''
+      sed -i 's|perl |${super.lib.makeBinPath [ super.perl ]}/perl |g' ./scripts/volume
+    '';
+  });
 }
