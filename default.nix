@@ -17,6 +17,7 @@ in {
     postPatch = ''
       cp ${youtube-dl-extractor} youtube_dl/extractor/user_extractors.py
       echo "from .user_extractors import *" >> youtube_dl/extractor/extractors.py
+      sed -i '/YandexDiskIE/d' youtube_dl/extractor/extractors.py
     '';
   })).override { phantomjsSupport = true; };
 

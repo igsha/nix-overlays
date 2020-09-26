@@ -115,3 +115,26 @@ class SibnetIE(InfoExtractor):
         title = self._og_search_title(webpage)
 
         return {'id': video_id, 'title': title, 'formats': formats}
+
+
+class YaDiskIE(InfoExtractor):
+    _VALID_URL = r'(?:https?://)?(?:www\.)?yadi\.sk/i/(?P<id>.+)'
+    _JSON_RE = r'(?is)<script[^>]+type=(["\']?)application/json\1[^>]+>(?P<json>.+?)</script>'
+
+    def _real_extract(self, url):
+        video_id = self._match_id(url)
+        webpage = self._download_webpage(url, video_id)
+        video_json = json.loads(self._html_search_regex(self._JSON_RE, webpage, video_id, group='json'))
+        resource = video_json['resources'][video_json['rootResourceId']]
+        title = resource['name']
+        formats = []
+        for video in resource['videoStreams']['videos']:
+            if video['dimension'] == 'adaptive':
+                formats = [{'url': video['url']}]
+                break
+            else:
+                formats.append({'url': video['url'], 'quality': int(video['dimension'][:-1])})
+
+        self.report_extraction(formats[0])
+
+        return {'id': video_id, 'title': title, 'formats': formats}
