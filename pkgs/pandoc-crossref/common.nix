@@ -1,12 +1,12 @@
-{ version, hash, pandocVersion, stdenv, fetchurl }:
+{ version, hash, stdenv, fetchurl }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "pandoc-crossref";
   inherit version;
   sourceRoot = "./";
 
   src = fetchurl {
-    url = "https://github.com/lierdakil/pandoc-crossref/releases/download/v${version}/linux-pandoc_${pandocVersion}.tar.gz";
+    url = "https://github.com/lierdakil/${pname}/releases/download/v${version}/${pname}-Linux.tar.xz";
     inherit hash;
   };
 

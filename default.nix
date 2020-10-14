@@ -25,8 +25,8 @@ in {
   docproc = super.callPackage (fetchMaster "igsha/docproc") { };
   pandoc-pipe = super.callPackage (fetchMaster "igsha/pandoc-pipe") { };
 
-  pandoc-bin = super.callPackage ./pkgs/pandoc/2.9.2.nix { };
-  pandoc-crossref-bin = super.callPackage ./pkgs/pandoc-crossref/0.3.6.2.nix { };
+  pandoc-bin = super.callPackage ./pkgs/pandoc/2.11.nix { };
+  pandoc-crossref-bin = super.callPackage ./pkgs/pandoc-crossref/0.3.8.2.nix { };
 
   iplay = super.callPackage (fetchMaster "igsha/iplay") { };
   clang-tools = super.clang-tools.overrideAttrs (old: {
