@@ -60,11 +60,12 @@ class KodikIE(InfoExtractor):
 
 
 class KodikListIE(InfoExtractor):
-    _VALID_URL = r'(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com)/(serial|video|uv)/(?P<id>[-\w/]+)'
+    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/(serial|video|uv)/(?P<id>[-\w/]+)'
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
-        webpage = self._download_webpage(url, video_id)
+        domain = re.search(self._VALID_URL, url).group('domain')
+        webpage = self._download_webpage(url, video_id, headers={'referer': domain})
         video_url = self._html_search_regex(r'iframe\.src\s*=\s*"([^"]+)"', webpage, video_id)
         video_url = re.sub(r'^//', 'https://', video_url)
         self.report_extraction(video_url)
