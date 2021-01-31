@@ -33,10 +33,14 @@ class GetPlrIE(InfoExtractor):
         webpage = self._download_webpage(url, video_id)
 
         video_urls = self._html_search_regex(r'file:\s*"([^"]+)"', webpage, video_id)
-        video_url = re.split(r',', video_urls)[0]
+        self.report_extraction(video_urls)
 
-        self.report_extraction(video_url)
-        return {'id': video_id, 'title': 'getplr ', 'url': re.sub(r'^\[\d+p?\]', '', video_url)}
+        formats = []
+        for g in re.split(',', video_urls):
+            xs = re.search(r'\[(\d+)p?\](.+)', g)
+            formats.append({'url': xs[2], 'quality': int(xs[1])})
+
+        return {'id': video_id, 'title': video_id, 'formats': formats}
 
 
 class KodikIE(InfoExtractor):
