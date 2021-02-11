@@ -1,4 +1,4 @@
-{ stdenv, python3Packages, panflute, fetchFromGitHub }:
+{ stdenv, lib, python3Packages, panflute, fetchFromGitHub }:
 
 python3Packages.buildPythonPackage rec {
   pname = "pantable";
@@ -13,7 +13,7 @@ python3Packages.buildPythonPackage rec {
   doCheck = false;
   propagatedBuildInputs = [ panflute ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://ickc.github.io/pantable;
     license = licenses.gpl3;
     description = "Pandoc Filter for CSV Tables";

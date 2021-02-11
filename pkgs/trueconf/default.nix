@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
+{ stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
 libpulseaudio, libv4l, boost16x, libudev, gnupg, cppdb, speex, speexdsp, icu66, zeromq,
 protobuf3_6, xorg, qt5, libGL, openssl, dbus, makeWrapper
 }:
@@ -65,7 +65,7 @@ in stdenv.mkDerivation rec {
     qt5.qtwebengine
     libGL
   ];
-  libsPath = stdenv.lib.makeLibraryPath propagatedNativeBuildInputs;
+  libsPath = lib.makeLibraryPath propagatedNativeBuildInputs;
 
   postFixup = ''
     patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) $out/opt/trueconf/TrueConf
@@ -86,7 +86,7 @@ in stdenv.mkDerivation rec {
   dontBuild = true;
   dontStrip = true;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://trueconf.com;
     description = "Cutting-Edge Video Conferencing Solution";
     platform = platforms.linux;

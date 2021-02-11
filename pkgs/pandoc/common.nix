@@ -1,4 +1,4 @@
-{ version, hash, stdenv, fetchurl }:
+{ version, hash, stdenv, lib, fetchurl }:
 
 stdenv.mkDerivation rec {
   pname = "pandoc";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   dontBuild = true;
   dontStrip = true;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://github.com/jgm/pandoc;
     description = "Release package for universal markup converter";
     license = licenses.gpl2;

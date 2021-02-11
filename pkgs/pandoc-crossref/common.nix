@@ -1,4 +1,4 @@
-{ version, hash, stdenv, fetchurl }:
+{ version, hash, stdenv, lib, fetchurl }:
 
 stdenv.mkDerivation rec {
   pname = "pandoc-crossref";
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   dontBuild = true;
   dontStrip = true;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://lierdakil.github.io/pandoc-crossref;
     description = "Pandoc filter for cross-references";
     license = licenses.gpl2;

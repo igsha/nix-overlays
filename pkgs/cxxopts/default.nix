@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake }:
+{ stdenv, lib, fetchFromGitHub, cmake }:
 
 stdenv.mkDerivation rec {
   name = "cxxopts";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ cmake ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     license = licenses.mit;
     description = "Lightweight C++ command line option parser";
     maintainer = maintainers.igsha;

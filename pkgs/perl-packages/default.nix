@@ -1,4 +1,4 @@
-{ stdenv, perlPackages, fetchurl }:
+{ stdenv, lib, perlPackages, fetchurl }:
 
 with perlPackages;
 rec {
@@ -32,11 +32,11 @@ rec {
     buildInputs = [ ModuleBuildTiny TestException TestOutput TestWarnings ];
     propagatedBuildInputs = [ HashMultiValue IPCRun3 JSON Pandoc ];
 
-    meta = {
+    meta = with lib; {
       homepage = https://github.com/nichtich/Pandoc-Elements;
       description = "Create and process Pandoc documents";
-      license = stdenv.lib.licenses.gpl2Plus;
-      maintainer = stdenv.maintainers.igsha;
+      license = licenses.gpl2Plus;
+      maintainer = maintainers.igsha;
     };
   };
 }

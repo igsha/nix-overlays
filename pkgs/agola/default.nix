@@ -1,4 +1,4 @@
-{ stdenv, buildGoModule, fetchFromGitHub }:
+{ stdenv, lib, buildGoModule, fetchFromGitHub }:
 
 buildGoModule rec {
   pname = "agola";
@@ -13,7 +13,7 @@ buildGoModule rec {
 
   vendorSha256 = "15px4ylg5hfc8pysgjnpqgsna8jcx7mczkmgh1zyzn31lzgq1yk5";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "CI/CD redefined";
     homepage = "https://agola.io";
     license = licenses.mit;

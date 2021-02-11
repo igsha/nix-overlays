@@ -1,4 +1,4 @@
-{ stdenv, python3Packages }:
+{ stdenv, lib, python3Packages }:
 
 let
   shutilwhich = python3Packages.buildPythonPackage rec {
@@ -30,7 +30,7 @@ in python3Packages.buildPythonPackage rec {
   doCheck = false;
   propagatedBuildInputs = with python3Packages; [ pandocfilters lxml pyyaml future shutilwhich ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = http://scorreia.com/software/panflute;
     license = licenses.bsdOriginal;
     description = "Pythonic Pandoc filters";

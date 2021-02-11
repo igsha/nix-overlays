@@ -1,4 +1,4 @@
-{ stdenv, python3Packages }:
+{ stdenv, lib, python3Packages }:
 
 python3Packages.buildPythonPackage rec {
   pname = "cmake-format";
@@ -14,7 +14,7 @@ python3Packages.buildPythonPackage rec {
   doCheck = false;
   propagatedBuildInputs = with python3Packages; [ jinja2 pyyaml six ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://github.com/cheshirekow/cmake_format;
     license = licenses.gpl3;
     description = "Provides Quality Assurance (QA) tools for cmake";
