@@ -17,7 +17,7 @@ rec {
     meta = {
       homepage = https://github.com/nichtich/Pandoc-Wrapper;
       description = "Wrapper for the mighty Pandoc document converter";
-      license = stdenv.lib.licenses.free;
+      license = lib.licenses.free;
     };
   };
 

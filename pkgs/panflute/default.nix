@@ -10,7 +10,7 @@ let
         sha256 = "db1f39c6461e42f630fa617bb8c79090f7711c9ca493e615e43d0610ecb64dc6";
       };
       doCheck = false;
-      meta = with stdenv.lib; {
+      meta = with lib; {
         homepage = "";
         license = "PSF";
         description = "shutil.which for those not using Python 3.3 yet.";
