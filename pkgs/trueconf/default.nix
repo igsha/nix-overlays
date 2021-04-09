@@ -20,7 +20,7 @@ in stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = https://trueconf.ru/download/trueconf_client_ubuntu2004_amd64.deb?v=202006231500;
-    hash = sha256:1mpmrgzr7cgkx8az7mx6h354f7nci4p8l9yivfb6kbp80ghwgc43;
+    hash = sha256:182gy23ybkxf64gk5gm8jhcq3r4yi0f0z4jp2xcnncc5iqvk847d;
   };
 
   buildInputs = [ boost16x ];
