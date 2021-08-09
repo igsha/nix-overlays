@@ -50,4 +50,12 @@ in {
       sed -i 's|perl |${super.lib.makeBinPath [ super.perl ]}/perl |g' ./scripts/volume
     '';
   });
+
+  python3 = super.python3.override {
+    packageOverrides = pself: psuper: {
+      jupyterhub = psuper.jupyterhub.overridePythonAttrs (old: {
+        doCheck = false;
+      });
+    };
+  };
 }
