@@ -1,6 +1,6 @@
 from .common import InfoExtractor
 from urllib import parse
-import re, json, sys
+import re, json, sys, base64
 
 
 class AnimediaIE(InfoExtractor):
@@ -46,27 +46,25 @@ class GetPlrIE(InfoExtractor):
 class KodikIE(InfoExtractor):
     _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/go/(?P<type>(seria|video|uv))/(?P<id>[-\w/]+)'
 
+    def __decode(self, data):
+        decoded = base64.b64decode(data[::-1])
+        return re.sub(r'^//', 'http://', decoded.decode())
+
     def _real_extract(self, url):
         video_id, video_hash = self._match_id(url).split('/')[0:2]
         domain = re.search(self._VALID_URL, url).group('domain')
         type_vid = re.search(self._VALID_URL, url).group('type')
 
-        webpage = self._download_webpage(url, video_id)
-        assets = self._html_search_regex(r'src\s*=\s*"(/assets/js/app\.promo\.\w+\.js)"', webpage, video_id)
-        content = self._download_webpage(f"{domain}{assets}", assets)
-        hash2, getter = re.search(r'getPlayerData\(\).*?hash2:"([^"]+)".*?url:"([^"]+)', content).group(1, 2)
-
-        params = dict(parse.parse_qsl(parse.urlsplit(url).query))
-        params.update({'type': type_vid, 'id': video_id, 'hash': video_hash, 'hash2': hash2})
+        params = {'type': type_vid, 'id': video_id, 'hash': video_hash}
         formdata = parse.urlencode(params).encode()
-        webpage = self._download_webpage(f"{domain}{getter}", getter, data=formdata)
+        webpage = self._download_webpage(f"{domain}/gvi", "Kodik GetVideoInfo", data=formdata)
 
         jsn = json.loads(webpage)
         if 'link' in jsn:
             return {'id': video_id, 'title': video_hash, 'url': jsn['link'], 'protocol': 'm3u8'}
         else:
             video_urls = jsn['links']
-            formats = [{'url': re.sub(r'^//', 'http://', v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
+            formats = [{'url': self.__decode(v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
             return {'id': video_id, 'title': video_hash, 'formats': formats}
 
 
