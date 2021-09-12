@@ -1,6 +1,6 @@
 { stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
-libpulseaudio, libv4l, boost16x, libudev, gnupg, cppdb, speex, speexdsp, icu66, zeromq,
-protobuf3_6, xorg, qt5, libGL, openssl, dbus, makeWrapper
+libpulseaudio, libv4l, boost16x, libudev, gnupg, cppdb, speex, speexdsp, icu67, zeromq,
+protobuf3_12, xorg, qt5, libGL, openssl, dbus, makeWrapper
 }:
 
 let
@@ -11,16 +11,16 @@ let
       hash = sha256:0g3fzypp0xjcgr90c5cyj57apx1cmy0c6y9lvw2qdcigbyby469p;
     };
   });
-  protobuf = protobuf3_6;
-  icu = icu66;
+  protobuf = protobuf3_12;
+  icu = icu67;
 
 in stdenv.mkDerivation rec {
   pname = "trueconf";
-  version = "7.5.2.127";
+  version = "7.5.3.721";
 
   src = fetchurl {
-    url = https://trueconf.ru/download/trueconf_client_ubuntu2004_amd64.deb?v=202006231500;
-    hash = sha256:182gy23ybkxf64gk5gm8jhcq3r4yi0f0z4jp2xcnncc5iqvk847d;
+    url = https://trueconf.com/download/trueconf_client_ubuntu2104_amd64.deb?v=202106251500;
+    hash = sha256:1cya0g4nd172wqrlksvaz4kpzwynmgjxk1z6hrm7fshnql879784;
   };
 
   buildInputs = [ boost16x ];
