@@ -58,4 +58,11 @@ in {
       });
     };
   };
+
+  udevil = super.udevil.overrideAttrs (old: {
+    postInstall = ''
+      sed -i 's/^allowed_types =.*/allowed_types = \$KNOWN_FILESYSTEMS, file, cifs, nfs, curlftpfs, ftpfs, sshfs, davfs/' \
+        $out/etc/udevil/udevil.conf
+    '';
+  });
 }
