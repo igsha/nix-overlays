@@ -12,6 +12,7 @@ in {
   panflute = super.callPackage ./pkgs/panflute { };
   pantable = super.callPackage ./pkgs/pantable { };
   cxxopts = super.callPackage ./pkgs/cxxopts { };
+  pegtl = super.callPackage ./pkgs/pegtl { };
 
   youtube-dl = (super.youtube-dl.overrideAttrs (old: rec {
     postPatch = ''
@@ -20,6 +21,13 @@ in {
       sed -i '/YandexDiskIE/d' youtube_dl/extractor/extractors.py
     '';
   })).override { phantomjsSupport = true; };
+
+  yt-dlp = super.yt-dlp.overrideAttrs (_: rec {
+    postPatch = ''
+      cp ${youtube-dl-extractor} yt_dlp/extractor/user_extractors.py
+      echo "from .user_extractors import *" >> yt_dlp/extractor/extractors.py
+    '';
+  });
 
   inherit (super.callPackage ./pkgs/perl-packages {}) PandocElements;
   docproc = super.callPackage (fetchMaster "igsha/docproc") { };

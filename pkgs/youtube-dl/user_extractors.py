@@ -148,3 +148,47 @@ class YaDiskIE(InfoExtractor):
         self.report_extraction(formats[0])
 
         return {'id': video_id, 'title': title, 'formats': formats}
+
+class HovelsIE(InfoExtractor):
+    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?hovels\.info)/bug/(?P<id>.+)'
+
+    def _real_extract(self, url):
+        video_id = self._match_id(url)
+        domain = re.search(self._VALID_URL, url).group('domain')
+        webpage = self._download_webpage(url, video_id, headers={'referer': domain})
+
+        config_json = self._html_search_regex(r'data-config=\'([^\']+)', webpage, video_id)
+        video_url = json.loads(config_json)['hls']
+        self.report_extraction(video_url)
+        formats = [{'url': video_url, 'http_headers': {'Referer': url}}]
+        return {'id': video_id, 'title': video_id, 'url': video_url}
+
+
+class PlayerjsIE(InfoExtractor):
+    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?[^/]+)/iplayer/player\.php\?id=(?P<id>.+)'
+
+    def _real_extract(self, url):
+        video_id = self._match_id(url)
+        video_id = parse.parse_qs(parse.urlparse(url).query)['id'][0]
+        video_id = parse.unquote(base64.b64decode(video_id))
+        if video_id.startswith('//'):
+            new_url = 'https:' + video_id
+            webpage = self._download_webpage(new_url, video_id, headers={'referer': url})
+            video_url = self._html_search_regex(r'file:\s*"([^"]+)"', webpage, video_id)
+            self.report_extraction(video_url)
+            return {'id': video_id, 'title': video_id, 'url': video_url}
+        else:
+            domain = re.search(self._VALID_URL, url).group('domain')
+            new_url = domain + video_id
+            webpage = self._download_webpage(new_url, video_id, headers={'referer': url})
+
+            video_urls = self._html_search_regex(r'"file":\s*"([^"]+)"', webpage, video_id)
+            self.report_extraction(video_urls)
+
+            formats = []
+            for g in re.split(',', video_urls):
+                xs = re.search(r'\[(\d+)p?\](.+)', g)
+                formats.append({'url': xs[2], 'quality': int(xs[1])})
+
+            desc = self._html_search_meta('description', webpage, fatal=True)
+            return {'id': video_id, 'title': desc, 'formats': formats}
