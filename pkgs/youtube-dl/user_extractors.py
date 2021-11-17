@@ -1,6 +1,7 @@
 from .common import InfoExtractor
 from urllib import parse
 import re, json, sys, base64
+from lxml import etree
 
 
 class AnimediaIE(InfoExtractor):
@@ -75,11 +76,15 @@ class KodikListIE(InfoExtractor):
         video_id = self._match_id(url)
         domain = re.search(self._VALID_URL, url).group('domain')
         webpage = self._download_webpage(url, video_id, headers={'referer': domain})
-        video_url = self._html_search_regex(r'iframe\.src\s*=\s*"([^"]+)"', webpage, video_id)
-        video_url = re.sub(r'^//', 'https://', video_url)
-        self.report_extraction(video_url)
 
-        return {'id': video_id, 'title': video_id, 'url': video_url, '_type': 'url', 'ie_key': 'Kodik'}
+        t = etree.HTML(webpage)
+        items = t.xpath("//div[@class='serial-series-box']/*/option/@value")
+        entries = [self.url_result(re.sub(r'^//', 'https://', url), ie='Kodik') for url in items]
+
+        title = t.xpath("//title/text()")[0]
+        self.report_extraction(title)
+
+        return self.playlist_result(entries, playlist_id=video_id, playlist_title=title)
 
 
 class RoomfishIE(InfoExtractor):

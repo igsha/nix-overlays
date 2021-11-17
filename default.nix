@@ -15,14 +15,15 @@ in {
   pegtl = super.callPackage ./pkgs/pegtl { };
 
   youtube-dl = (super.youtube-dl.overrideAttrs (old: rec {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ super.python3Packages.lxml ];
     postPatch = ''
       cp ${youtube-dl-extractor} youtube_dl/extractor/user_extractors.py
       echo "from .user_extractors import *" >> youtube_dl/extractor/extractors.py
-      sed -i '/YandexDiskIE/d' youtube_dl/extractor/extractors.py
     '';
   })).override { phantomjsSupport = true; };
 
-  yt-dlp = super.yt-dlp.overrideAttrs (_: rec {
+  yt-dlp = super.yt-dlp.overrideAttrs (old: rec {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ super.python3Packages.lxml ];
     postPatch = ''
       cp ${youtube-dl-extractor} yt_dlp/extractor/user_extractors.py
       echo "from .user_extractors import *" >> yt_dlp/extractor/extractors.py
