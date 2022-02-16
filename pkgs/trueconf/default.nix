@@ -1,6 +1,6 @@
 { stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
 libpulseaudio, libv4l, boost16x, libudev, gnupg, cppdb, speex, speexdsp, icu67, zeromq,
-protobuf3_12, xorg, qt5, libGL, openssl, dbus, makeWrapper
+protobuf3_12, xorg, qt5, qt5Full, libGL, openssl, dbus, makeWrapper, lame, ghostscript
 }:
 
 let
@@ -19,8 +19,8 @@ in stdenv.mkDerivation rec {
   version = "7.5.3.721";
 
   src = fetchurl {
-    url = https://trueconf.com/download/trueconf_client_ubuntu2104_amd64.deb?v=202106251500;
-    hash = sha256:1cya0g4nd172wqrlksvaz4kpzwynmgjxk1z6hrm7fshnql879784;
+    url = https://trueconf.com/download/trueconf_client_ubuntu2010_amd64.deb?v=202103221900;
+    hash = "sha256-xYDA6z4ghxT1aD5kQUcABr+7aY9Q65gXd1sDphw62zs=";
   };
 
   buildInputs = [ boost16x ];
@@ -46,6 +46,8 @@ in stdenv.mkDerivation rec {
     cppdb
     icu
     protobuf
+    lame
+    ghostscript
 
     xorg.libxkbfile
     xorg.libX11
@@ -61,24 +63,23 @@ in stdenv.mkDerivation rec {
     xorg.libXScrnSaver
     xorg.libxcb
 
-    qt5.qtbase
-    qt5.qtwebengine
+    qt5Full
     libGL
   ];
   libsPath = lib.makeLibraryPath propagatedNativeBuildInputs;
 
-  postFixup = ''
-    patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) $out/opt/trueconf/TrueConf
-    patchelf --set-rpath ${libsPath}:$out/opt/trueconf/plugins/gui:$out/opt/trueconf/lib $out/opt/trueconf/TrueConf
+  fixupPhase = ''
+    patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) $out/bin/TrueConf
+    patchelf --set-rpath ${libsPath}:$out/opt/trueconf/plugins/gui:$out/opt/trueconf/lib $out/bin/TrueConf
     patchelf --set-rpath ${libsPath} $out/opt/trueconf/plugins/gui/*.so
-    wrapQtApp $out/opt/trueconf/TrueConf
-    wrapProgram $out/opt/trueconf/TrueConf --suffix LD_LIBRARY_PATH : ${libsPath}
+    wrapQtApp $out/bin/TrueConf
+    wrapProgram $out/bin/TrueConf --suffix LD_LIBRARY_PATH : ${libsPath}
   '';
 
   installPhase = ''
     mkdir -p $out/bin
     dpkg -x $src $out
-    ln -s $out/opt/trueconf/TrueConf $out/bin/TrueConf
+    mv $out/opt/trueconf/TrueConf $out/bin/TrueConf
   '';
 
   dontUnpack = true;
