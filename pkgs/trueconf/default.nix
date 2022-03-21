@@ -1,5 +1,5 @@
 { stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
-libpulseaudio, libv4l, boost16x, udev, gnupg, cppdb, speex, speexdsp, icu67, zeromq,
+libpulseaudio, libv4l, udev, gnupg, cppdb, speex, speexdsp, icu67, zeromq, sqlite,
 protobuf3_12, xorg, qt5, qt5Full, libGL, openssl, dbus, makeWrapper, lame, ghostscript
 }:
 
@@ -23,7 +23,6 @@ in stdenv.mkDerivation rec {
     hash = "sha256-xYDA6z4ghxT1aD5kQUcABr+7aY9Q65gXd1sDphw62zs=";
   };
 
-  buildInputs = [ boost16x ];
   nativeBuildInputs = [ dpkg patchelf qt5.wrapQtAppsHook makeWrapper ];
   propagatedNativeBuildInputs = [
     stdenv.cc.cc
@@ -38,6 +37,7 @@ in stdenv.mkDerivation rec {
     libidn11
     openssl
     dbus
+    sqlite
 
     gnupg
     speex
@@ -70,16 +70,19 @@ in stdenv.mkDerivation rec {
 
   fixupPhase = ''
     patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) $out/bin/TrueConf
-    patchelf --set-rpath ${libsPath}:$out/opt/trueconf/plugins/gui:$out/opt/trueconf/lib $out/bin/TrueConf
+    patchelf --set-rpath ${libsPath}:$out/opt/trueconf/plugins/gui:$out/lib $out/bin/TrueConf
     patchelf --set-rpath ${libsPath} $out/opt/trueconf/plugins/gui/*.so
+
     wrapQtApp $out/bin/TrueConf
     wrapProgram $out/bin/TrueConf --suffix LD_LIBRARY_PATH : ${libsPath}
+    makeWrapper $out/bin/TrueConf $out/bin/TrueConfX11 --set XDG_SESSION_TYPE x11
   '';
 
   installPhase = ''
     mkdir -p $out/bin
     dpkg -x $src $out
     mv $out/opt/trueconf/TrueConf $out/bin/TrueConf
+    mv $out/opt/trueconf/lib $out/
   '';
 
   dontUnpack = true;
