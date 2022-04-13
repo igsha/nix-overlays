@@ -13,6 +13,7 @@ in {
   pantable = super.callPackage ./pkgs/pantable { };
   cxxopts = super.callPackage ./pkgs/cxxopts { };
   pegtl = super.callPackage ./pkgs/pegtl { };
+  netron = super.callPackage ./pkgs/netron { };
 
   youtube-dl = (super.youtube-dl.overrideAttrs (old: rec {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ super.python3Packages.lxml ];
