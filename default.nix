@@ -15,13 +15,13 @@ in {
   pegtl = super.callPackage ./pkgs/pegtl { };
   netron = super.callPackage ./pkgs/netron { };
 
-  youtube-dl = (super.youtube-dl.overrideAttrs (old: rec {
+  youtube-dl = super.youtube-dl.overrideAttrs (old: rec {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ super.python3Packages.lxml ];
     postPatch = ''
       cp ${youtube-dl-extractor} youtube_dl/extractor/user_extractors.py
       echo "from .user_extractors import *" >> youtube_dl/extractor/extractors.py
     '';
-  })).override { phantomjsSupport = true; };
+  });
 
   yt-dlp = super.yt-dlp.overrideAttrs (old: rec {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ super.python3Packages.lxml ];

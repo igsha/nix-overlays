@@ -1,6 +1,6 @@
 { stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
-libpulseaudio, libv4l, udev, gnupg, cppdb, speex, speexdsp, icu67, zeromq, sqlite,
-protobuf3_12, xorg, qt5, qt5Full, libGL, openssl, dbus, makeWrapper, lame, ghostscript
+  libpulseaudio, libv4l, udev, gnupg, cppdb, speex, speexdsp, icu67, zeromq, sqlite,
+  protobuf3_19, xorg, qt5, qt5Full, libGL, openssl, dbus, makeWrapper, lame, ghostscript
 }:
 
 let
@@ -11,7 +11,7 @@ let
       hash = sha256:0g3fzypp0xjcgr90c5cyj57apx1cmy0c6y9lvw2qdcigbyby469p;
     };
   });
-  protobuf = protobuf3_12;
+  protobuf = protobuf3_19;
   icu = icu67;
 
 in stdenv.mkDerivation rec {
