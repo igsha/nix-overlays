@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsaLib, glib, glibc,
+{ stdenv, lib, fetchurl, dpkg, patchelf, curl, freetype, libidn, gcc, alsa-lib, glib, glibc,
   libpulseaudio, libv4l, udev, gnupg, cppdb, speex, speexdsp, icu67, zeromq, sqlite,
   protobuf3_19, xorg, qt5, qt5Full, libGL, openssl, dbus, makeWrapper, lame, ghostscript
 }:
@@ -29,7 +29,7 @@ in stdenv.mkDerivation rec {
     glib
     glibc
     curl
-    alsaLib
+    alsa-lib
     libpulseaudio
     libv4l
     udev
