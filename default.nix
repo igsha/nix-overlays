@@ -27,7 +27,7 @@ in {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ super.python3Packages.lxml ];
     postPatch = ''
       cp ${youtube-dl-extractor} yt_dlp/extractor/user_extractors.py
-      echo "from .user_extractors import *" >> yt_dlp/extractor/extractors.py
+      echo "from .user_extractors import *" >> yt_dlp/extractor/_extractors.py
     '';
   });
 
