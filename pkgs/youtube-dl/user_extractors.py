@@ -44,35 +44,33 @@ class GetPlrIE(InfoExtractor):
         return {'id': video_id, 'title': video_id, 'formats': formats}
 
 
-class KodikIE(InfoExtractor):
-    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/go/(?P<type>[^/]+)/(?P<id>[^/]+)/(?P<hash>[^/]+)/(?P<value>[^/]+)'
+class KodikListIE(InfoExtractor):
+    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/(?P<type>(serial?|video|uv))/(?P<id>[-\w/]+)'
 
-    def __decode(self, data):
+    @staticmethod
+    def __decode(data):
         decoded = base64.b64decode(data[::-1])
         return re.sub(r'^//', 'https://', decoded.decode())
 
-    def _real_extract(self, url):
-        domain = re.search(self._VALID_URL, url).group('domain')
-        video_type = re.search(self._VALID_URL, url).group('type')
-        video_id = re.search(self._VALID_URL, url).group('id')
-        video_hash = re.search(self._VALID_URL, url).group('hash')
-        video_value = re.search(self._VALID_URL, url).group('value')
+    def __getter(self, domain, video_type, item):
+        video_id = item.get('data-id')
+        video_hash = item.get('data-hash')
+        video_value = item.get('value')
 
         params = {'type': video_type, 'id': video_id, 'hash': video_hash}
         formdata = parse.urlencode(params).encode()
         webpage = self._download_webpage(f"{domain}/gvi", "Kodik GetVideoInfo", data=formdata)
 
         jsn = json.loads(webpage)
+        result = {'id': video_id, 'title': f"#{video_value} ({video_id})", 'episode_number': int(video_value)}
         if 'link' in jsn:
-            return {'id': video_id, 'title': f"#{video_value} {video_hash}", 'url': jsn['link'], 'protocol': 'm3u8'}
+            result.update({'url': jsn['link'], 'protocol': 'm3u8'})
         else:
             video_urls = jsn['links']
             formats = [{'url': self.__decode(v[0]['src']), 'quality': int(k)} for (k,v) in video_urls.items()]
-            return {'id': video_id, 'title': f"#{video_value} {video_hash}", 'formats': formats}
+            result.update({'formats': formats})
 
-
-class KodikListIE(InfoExtractor):
-    _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/(?P<type>(serial?|video|uv))/(?P<id>[-\w/]+)'
+        return result
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
@@ -85,10 +83,9 @@ class KodikListIE(InfoExtractor):
         t = etree.HTML(webpage)
         title = t.xpath("//title/text()")[0]
         items = t.xpath("//div[@class='serial-series-box']/*/option")
-        item_setter = lambda x: f"{domain}/go/{video_type}/{x.get('data-id')}/{x.get('data-hash')}/{x.get('value')}"
 
         self.report_extraction(title)
-        return self.playlist_from_matches(items, playlist_id=video_id, playlist_title=title, getter=item_setter, ie=KodikIE)
+        return {'_type': 'playlist', 'id': video_id, 'title': title, 'entries': map(lambda x: self.__getter(domain, video_type, x), items)}
 
 
 class RoomfishIE(InfoExtractor):
