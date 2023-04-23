@@ -46,10 +46,13 @@ class GetPlrIE(InfoExtractor):
 
 class KodikListIE(InfoExtractor):
     _VALID_URL = r'(?P<domain>(?:https?://)?(?:www\.)?(kodik\.info|aniqit\.com|anivod\.com))/(?P<type>(serial?|video|uv))/(?P<id>[-\w/]+)'
+    _decode_table = {
+            **{c: c + 13 if c < ord('N') else c - 13 for c in range(ord('A'), ord('Z') + 1)},
+            **{c: c + 13 if c < ord('n') else c - 13 for c in range(ord('a'), ord('z') + 1)}}
 
     @staticmethod
     def __decode(data):
-        decoded = base64.b64decode(data[::-1])
+        decoded = base64.b64decode(data.translate(__class__._decode_table))
         return re.sub(r'^//', 'https://', decoded.decode())
 
     def __getter(self, domain, video_type, item):
